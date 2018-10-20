@@ -1,3 +1,5 @@
 .vs/
 *.[Cc]ache
 !*.[Cc]ache/
+obj/
+packages/
