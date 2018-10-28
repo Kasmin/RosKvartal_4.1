@@ -54,6 +54,7 @@ namespace ConsoleApp1
         {
             List<People> blancedPeople = pp.Where(n => n.Balance > bb).Select(n => n).ToList();
 
+            Console.WriteLine("Count > " + bb + ": " + blancedPeople.Count() + " people");
             foreach (People i in blancedPeople)
             {
                 Console.WriteLine("Богаче 4000: " + i.Name + " - " + i.Balance);
