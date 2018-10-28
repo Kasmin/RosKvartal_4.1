@@ -17,32 +17,32 @@ namespace ConsoleApp1
             people.Add(new People() { Name = "Лёша", Age = 25, Sex = "Male", Balance = 14570 });
             people.Add(new People() { Name = "Соня", Age = 27, Sex = "Female", Balance = 4570 });
 
-            People oldMan = FindOlder(people);
-            People richMan = FindRicher(people);
-            List<People> balancedPeople = FindBalance(people, 4000); 
+            string line = "----------------";
 
-            Console.WriteLine("Самый старший: " + oldMan.Name + " - " + oldMan.Age);
-            Console.WriteLine("Самый богатый: " + richMan.Name + " - " + richMan.Balance);
-
-            foreach(People i in balancedPeople)
-            {
-                Console.WriteLine("Богаче 4000: " + i.Name + " - " + i.Balance);
-            }
-
+            FindOlder(people);
+            FindRicher(people);
+            Console.WriteLine(line);
+            FindBalance(people, 4000);
+            Console.WriteLine(line);
+            OrderBy(people, "Age");
+            Console.WriteLine(line);
+            OrderBy(people, "Sex");
+            Console.WriteLine(line);
+            OrderBy(people, "Balance");
             Console.ReadLine();
         }
 
-        static People FindOlder(List<People> pp)
+        static void FindOlder(List<People> pp)
         {
             People oldMan = pp.OrderByDescending(n => n.Age).FirstOrDefault();
 
-            return oldMan;
+            Console.WriteLine("Самый старший: " + oldMan.Name + " - " + oldMan.Age);
         }
-        static People FindRicher(List<People> pp)
+        static void FindRicher(List<People> pp)
         {
             People richMan = pp.OrderByDescending(n => n.Balance).FirstOrDefault();
 
-            return richMan;
+            Console.WriteLine("Самый богатый: " + richMan.Name + " - " + richMan.Balance);
         }
         static string FindRicherAndOlder(List<People> pp)
         {
@@ -50,11 +50,24 @@ namespace ConsoleApp1
 
             return richMan.Name;
         }
-        static List<People> FindBalance(List<People> pp, int bb)
+        static void FindBalance(List<People> pp, int bb)
         {
             List<People> blancedPeople = pp.Where(n => n.Balance > bb).Select(n => n).ToList();
 
-            return blancedPeople;
+            foreach (People i in blancedPeople)
+            {
+                Console.WriteLine("Богаче 4000: " + i.Name + " - " + i.Balance);
+            }
+        }
+        static void OrderBy(List<People> pp, string typeSort)
+        {
+            var propertyInfo = typeof(People).GetProperty(typeSort);
+            List<People> orderBy = pp.OrderBy(n => propertyInfo.GetValue(n, null)).ToList();
+            Console.WriteLine("Sort by " + typeSort + ":");
+            foreach(People i in orderBy)
+            {
+                Console.WriteLine(i.Name + " - " + propertyInfo.GetValue(i, null));
+            }
         }
     }
 
